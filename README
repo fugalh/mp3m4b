@@ -19,6 +19,7 @@ not a GUI.
 == Requirements
 The following should be in your path:
 
+    ruby
     mp3info
     ffmpeg
     ChapterTool
@@ -28,7 +29,8 @@ OS X. ChapterTool is included with GarageBand, but it's not in the path by
 default. /Applications/GarageBand.app/Contents/MacOS/ChapterTool
 
 ffmpeg and mp3info can be installed using MacPorts[2]. Alternatively, all three
-binaries are included with Audiobook Maker.
+binaries are included with Audiobook Maker. Ruby comes with all reasonably
+modern versions of OS X, but is also available via MacPorts.
 
 == Limitations
 Doesn't do tags yet. Patches welcome. In the meantime, when you open the output
