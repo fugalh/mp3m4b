@@ -6,13 +6,14 @@ open myaudiobook.m4b
 
 == Details
 Concatenates mp3 files (in the order given), transcodes to m4b, and adds
-chapter information.
+chapter information. The resulting file is an iPod audiobook complete with
+chapter breaks.
 
 Chapter titles are the mp3 filenames.
 
 Tries to use the same bitrate as the first mp3 file.
 
-Functionality is essentially the same as Audiobook Maker, but it's a  script
+Functionality is essentially the same as Audiobook Maker[1], but it's a  script
 not a GUI.
 
 == Requirements
@@ -24,9 +25,9 @@ The following should be in your path:
 
 Because it depends on ChapterTool, to my knowledge this restricts things to 
 OS X. ChapterTool is included with GarageBand, but it's not in the path by
-default.
+default. /Applications/GarageBand.app/Contents/MacOS/ChapterTool
 
-ffmpeg and mp3info can be installed using MacPorts. Alternatively, all three
+ffmpeg and mp3info can be installed using MacPorts[2]. Alternatively, all three
 binaries are included with Audiobook Maker.
 
 == Limitations
@@ -41,6 +42,11 @@ If ChapterTool fails, the intermediate m4a file will not be deleted, and the
 enclosing folder will be opened in Finder, so that you can attempt to use it
 as-is (without chapters) if you don't want to wait for the whole thing to
 transcode again.
+
+== References
+1. http://audiobookmaker.sourceforge.net/
+2. http://www.macports.org/
+3. http://makezine.com/extras/43.html
 
 == License
 Copyright (C) 2009 Hans Fugal <hans@fugal.net>
