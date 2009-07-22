@@ -1,0 +1,60 @@
+== Synopsis
+cd /path/to/audiobook
+mp3m4b *.mp3
+mv out.m4b myaudiobook.m4b
+open myaudiobook.m4b
+
+== Details
+Concatenates mp3 files (in the order given), transcodes to m4b, and adds
+chapter information.
+
+Chapter titles are the mp3 filenames.
+
+Tries to use the same bitrate as the first mp3 file.
+
+Functionality is essentially the same as Audiobook Maker, but it's a  script
+not a GUI.
+
+== Requirements
+The following should be in your path:
+
+    mp3info
+    ffmpeg
+    ChapterTool
+
+Because it depends on ChapterTool, to my knowledge this restricts things to 
+OS X. ChapterTool is included with GarageBand, but it's not in the path by
+default.
+
+ffmpeg and mp3info can be installed using MacPorts. Alternatively, all three
+binaries are included with Audiobook Maker.
+
+== Limitations
+Doesn't do tags yet. Patches welcome. In the meantime, when you open the output
+file with iTunes, just set the title and author.
+
+There seems to be a limit on how big the audiobook gets before ChapterTool
+chokes on it. I read somewhere about a 12-hour limit for iPods, but it worked
+fine on a 12:39:48 audiobook. On the other hand, it failed on a 14-hour
+audiobook. So consider breaking it up into pieces if it's particularly large.
+If ChapterTool fails, the intermediate m4a file will not be deleted, and the
+enclosing folder will be opened in Finder, so that you can attempt to use it
+as-is (without chapters) if you don't want to wait for the whole thing to
+transcode again.
+
+== License
+Copyright (C) 2009 Hans Fugal <hans@fugal.net>
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
