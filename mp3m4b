@@ -1,0 +1,74 @@
+#!/usr/bin/ruby
+require 'pathname'
+
+def usage
+  $stderr.puts "usage: #{$0} <mp3 files>\nout.m4b"
+  exit 1
+end
+
+files=ARGV
+usage if files.empty?
+
+dir = Pathname.new(`mktemp -d -t mp3m4b.XXX`.strip)
+
+# make an m4a tempfile
+m4a = dir + 'tmp.m4a'
+
+# concat and transcode
+IO.popen('-') {|f| 
+  # yes, you can just cat mp3 files together
+  exec('cat',*files) if f.nil?
+
+  $stdin.reopen f
+  ab = `mp3info -r m -p %rk '#{files.first}'`
+  system 'ffmpeg','-y','-i','-','-ab',ab,'-ac','1','-f','mp4',m4a
+}
+
+# make chapters xml
+xml = dir + 'chapters.xml'
+xml.open('w') {|x|
+  x.puts <<EOF
+<?xml version="1.0" encoding="utf-8"?>
+<chapters version="1">
+EOF
+
+  t = 0
+  files.each {|f|
+    # TODO should sanitize title (< and &)
+    x.puts "  <chapter starttime='" + sprintf("%02d:%02d",t/60,t%60) + "'><title>#{f}</title></chapter>"
+    t += `mp3info -p %S '#{f}'`.to_i
+  }
+
+  x.puts "</chapters>"
+}
+puts xml.read
+
+m4b = 'out.m4b'
+puts 'Writing to ' + m4b
+
+# ChapterTool -x chapters.xml -a input.m4a -o output.m4b
+# alas, it doesn't work with a fifo input
+successful = system 'ChapterTool','-x',xml.to_s,'-a',m4a,'-o',m4b
+
+if successful
+  dir.rmtree
+else
+  puts "ChapterTool failed, opening temporary directory:\n#{dir}"
+  system 'open',dir
+end
+
+#    Copyright (C) 2009 Hans Fugal <hans@fugal.net>
+#    
+#    This program is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#    
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#    
+#    You should have received a copy of the GNU General Public License along
+#    with this program; if not, write to the Free Software Foundation, Inc.,
+#    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
